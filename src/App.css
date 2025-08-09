@@ -1,0 +1,22 @@
+.App {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+main {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  main {
+    padding-top: 15px;
+    padding-bottom: 30px;
+  }
+}
+
