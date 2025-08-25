@@ -51,21 +51,23 @@ const favoritesReducer = (state, action) => {
   }
 };
 
-export const FavoritesProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(favoritesReducer, initialState);
-
-  // Load favorites from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedFavorites = localStorage.getItem('bookExplorerFavorites');
-      if (savedFavorites) {
-        const favorites = JSON.parse(savedFavorites);
-        dispatch({ type: 'SET_FAVORITES', payload: favorites });
-      }
-    } catch (error) {
-      console.error('Error loading favorites from localStorage:', error);
+// Lazy initializer to load favorites synchronously from localStorage on first render
+const initializeState = (defaultState) => {
+  try {
+    const saved = localStorage.getItem('bookExplorerFavorites');
+    if (!saved) return defaultState;
+    const parsed = JSON.parse(saved);
+    if (Array.isArray(parsed)) {
+      return { ...defaultState, favorites: parsed };
     }
-  }, []);
+    return defaultState;
+  } catch (_error) {
+    return defaultState;
+  }
+};
+
+export const FavoritesProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(favoritesReducer, initialState, initializeState);
 
   // Save favorites to localStorage whenever they change
   useEffect(() => {

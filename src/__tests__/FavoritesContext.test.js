@@ -27,10 +27,6 @@ const renderWithProvider = (component) => {
 };
 
 describe('FavoritesContext', () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
   test('provides initial empty favorites', () => {
     renderWithProvider(<TestComponent />);
     
